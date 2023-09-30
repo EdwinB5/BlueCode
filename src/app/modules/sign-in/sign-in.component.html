@@ -1,39 +1,62 @@
-<div class="displayTable text-slate-500">
-  <div class="displayTableCell">
-    <div class="authBlock">
-      <h3>Sign In</h3>
-      <div class="formGroup">
+<div
+  class="align-items-center flex-1 justify-center p-5"
+  *ngIf="!loaderService.isLoading"
+  [ngClass]="{
+    animate__animated: !loaderService.isLoading,
+    animate__fadeIn: !loaderService.isLoading
+  }"
+>
+  <div class="authBlock rounded-md bg-slate-700 p-5 shadow-md">
+    <h3 class="text-center text-xl font-semibold">Sign In</h3>
+    <div class="formGroup px-5 py-3 md:px-32">
+      <div class="relative m-3">
         <input
           type="text"
-          class="formControl"
-          placeholder="Username"
+          id="floating_filled"
           #userName
+          class="peer block w-full appearance-none border-0 border-b-2 border-gray-600 bg-transparent px-0 py-2.5 text-sm focus:border-blue-600 focus:outline-none focus:ring-0"
+          placeholder=" "
           required
         />
-      </div>
-      <div class="formGroup">
-        <input
-          type="password"
-          class="formControl"
-          placeholder="Password"
-          #userPassword
-          required
-        />
-      </div>
-      <!-- Calling SignIn Api from AuthService -->
-      <div class="formGroup">
-        <input
-          type="button"
-          class="btn btnPrimary"
-          value="Log in"
-          (click)="authService.signIn(userName.value, userPassword.value)"
-        />
+        <label
+          for="floating_filled"
+          class="absolute left-0 top-1 z-10 origin-[0] -translate-y-4 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600 dark:text-gray-400 peer-focus:dark:text-blue-500"
+          >Username</label
+        >
       </div>
     </div>
-    <div class="redirectToLogin">
+    <div class="formGroup px-5 py-3 md:px-32">
+      <div class="relative m-3">
+        <input
+          type="password"
+          id="floating_filled"
+          #userPassword
+          class="peer block w-full appearance-none border-0 border-b-2 border-gray-600 bg-transparent px-0 py-2.5 text-sm focus:border-blue-600 focus:outline-none focus:ring-0"
+          placeholder=" "
+          required
+        />
+        <label
+          for="floating_filled"
+          class="absolute left-0 top-1 z-10 origin-[0] -translate-y-4 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:text-blue-600 dark:text-gray-400 peer-focus:dark:text-blue-500"
+          >Password</label
+        >
+      </div>
+    </div>
+    <!-- Calling SignIn Api from AuthService -->
+    <div class="formGroup flex w-full justify-center py-3 text-center">
+      <input
+        type="button"
+        value="Log in"
+        class="h-10 w-32 rounded-md bg-slate-800 text-sm font-semibold shadow-md cursor-pointer transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-slate-500 hover:text-slate-800"
+        (click)="authService.signIn(userName.value, userPassword.value)"
+      />
+    </div>
+    <div
+      class="redirectToLogin flex justify-center py-3 text-sm italic opacity-70"
+    >
       <span
         >Don't have an account?<span
-          class="redirect"
+          class="redirect cursor-pointer underline"
           routerLink="/sign-up"
         >
           Sign Up</span

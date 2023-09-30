@@ -8,9 +8,11 @@ import { LoaderComponentService } from '@services/loader-component.service';
   styleUrls: ['./sign-in.component.css']
 })
 export class SignInComponent implements OnInit {
-  constructor (public authService: AuthService, private loaderService: LoaderComponentService) { }
+  constructor (public authService: AuthService, public loaderService: LoaderComponentService) { }
 
   ngOnInit(): void {
-    this.loaderService.hideLoader();
+    this.loaderService.runLoader(2000, () => {
+      console.log('Sign in loaded...');
+    });
   }
 }

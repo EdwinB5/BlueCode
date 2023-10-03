@@ -32,7 +32,7 @@ export class AuthService {
   }
 
   setUserData(user: any) {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(
+    const userRef: AngularFirestoreDocument<User> = this.afs.doc(
       `users/${user.uid}`,
     );
     const userData: User = {
@@ -42,7 +42,7 @@ export class AuthService {
       photoURL: user.photoURL,
       role: user.role || 'default',
     };
-    console.log(userData);
+
     return userRef.set(userData, {
       merge: true,
     });
@@ -81,16 +81,27 @@ export class AuthService {
     return user.role || '';
   }
 
-  signUp(email: string, password: string) {
+  signUp(email: string, password: string, username: string, role: string) {
     return this.afAuth
       .createUserWithEmailAndPassword(email, password)
       .then((result) => {
-        this.setUserData(result.user);
-        this.afAuth.authState.subscribe((user) => {
-          if (user) {
-            this.router.navigate(['/dashboard']);
-          }
-        });
+        const user = result.user;
+        if (user) {
+          this.setUserData({
+            uid: user.uid,
+            email: email,
+            displayName: username,
+            photoURL: '',
+            role: role || 'default',
+          });
+          this.afAuth.authState.subscribe((user) => {
+            if (user) {
+              this.router.navigate(['/dashboard']);
+            }
+          });
+        } else {
+          window.alert('Error: El usuario es nulo.');
+        }
       })
       .catch((error) => {
         window.alert(error.message);

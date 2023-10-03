@@ -43,6 +43,8 @@ export class AuthService {
       role: user.role || 'default',
     };
 
+    this.userData = user;
+
     return userRef.set(userData, {
       merge: true,
     });
@@ -52,10 +54,10 @@ export class AuthService {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then((result: { user: any }) => {
-        this.setUserData(result.user);
         this.afAuth.authState.subscribe((user) => {
           if (user) {
             this.router.navigate(['/dashboard']);
+            console.log(result.user);
           }
         });
       })

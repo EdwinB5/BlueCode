@@ -1,21 +1,45 @@
-<!-- Sidebar navigation -->
+<div
+  class="h-full w-full px-5"
+  id="contact-us"
+  *ngIf="!loaderService.isLoading"
+  [ngClass]="{
+    animate__animated: !loaderService.isLoading,
+    animate__fadeIn: !loaderService.isLoading
+  }"
+>
+  <!-- Sidebar navigation -->
   <div class="container-fluid">
     <div class="row">
       <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
         <div class="inner-adjust">
-          <div class="pt-3 pb-2 mb-3 border-b">
+          <div class="mb-3 border-b pb-2 pt-3">
             <h1 class="h2">User Profile</h1>
           </div>
           <!-- Show user data when logged in -->
           <div class="row" *ngIf="authService.userData as user">
             <div class="w-full">
               <div class="flex">
-                <img class="self-start mr-5 img-thumbnail rounded-full" src="{{(user.photoURL) ? user.photoURL : ''}}"
-                  alt="{{user.displayName}}">
+                <img
+                  class="img-thumbnail mr-5 self-start rounded-full"
+                  src="{{ user.photoURL ? user.photoURL : '' }}"
+                  alt="{{ user.displayName }}"
+                />
                 <div class="media-body">
-                  <h1 class="text-xl font-bold">Hello: <span class="font-semibold">{{(user.displayName) ? user.displayName : 'User'}}</span></h1>
-                  <p>User ID: <span class="font-semibold">{{user.uid}}</span></p>
-                  <p>Email: <span class="font-semibold">{{user.email}}</span></p>
+                  <h1 class="text-xl font-bold">
+                    Hello:
+                    <span class="font-semibold">{{
+                      user.displayName ? user.displayName : "User"
+                    }}</span>
+                  </h1>
+                  <p>
+                    User ID: <span class="font-semibold">{{ user.uid }}</span>
+                  </p>
+                  <p>
+                    Email: <span class="font-semibold">{{ user.email }}</span>
+                  </p>
+                  <p>
+                    Role: <span class="font-semibold">{{ user.role }}</span>
+                  </p>
                 </div>
               </div>
             </div>
@@ -24,4 +48,4 @@
       </main>
     </div>
   </div>
-  
+</div>

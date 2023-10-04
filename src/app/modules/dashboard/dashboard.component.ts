@@ -5,13 +5,17 @@ import { LoaderComponentService } from '@services/loader-component.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
-  constructor(public authService: AuthService, private loaderService: LoaderComponentService) {}
+  constructor(
+    public authService: AuthService,
+    public loaderService: LoaderComponentService,
+  ) {}
 
   ngOnInit(): void {
-    this.loaderService.hideLoader();
+    this.loaderService.runLoader(3000, () => {
+      console.log('Dashboard loading...');
+    });
   }
-
 }

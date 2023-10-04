@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   AngularFirestore,
@@ -6,6 +6,7 @@ import {
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { User } from '@models/user.model';
+import { AlertService } from './alert.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,16 +18,20 @@ export class AuthService {
     public afs: AngularFirestore,
     public afAuth: AngularFireAuth,
     public router: Router,
-    public ngZone: NgZone,
+    public alert: AlertService,
   ) {
     this.afAuth.authState.subscribe((user) => {
       if (user) {
-        this.userData = user;
-        localStorage.setItem('user', JSON.stringify(this.userData));
-        JSON.parse(localStorage.getItem('user')!);
+        const userRef = this.afs.collection('users').doc<User>(user.uid);
+        userRef.get().subscribe((doc) => {
+          if (doc.exists) {
+            this.userData = doc.data() as User;
+          }
+          localStorage.setItem('user', JSON.stringify(this.userData));
+        });
       } else {
+        this.userData = null;
         localStorage.setItem('user', 'null');
-        JSON.parse(localStorage.getItem('user')!);
       }
     });
   }
@@ -40,10 +45,8 @@ export class AuthService {
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
-      role: user.role || 'default',
+      role: user.role,
     };
-
-    this.userData = user;
 
     return userRef.set(userData, {
       merge: true,
@@ -57,12 +60,11 @@ export class AuthService {
         this.afAuth.authState.subscribe((user) => {
           if (user) {
             this.router.navigate(['/dashboard']);
-            console.log(result.user);
           }
         });
       })
       .catch((error: { message: any }) => {
-        window.alert(error.message);
+        this.alert.showErrorAlert('Error sign in', error.message);
       });
   }
 
@@ -96,17 +98,32 @@ export class AuthService {
             photoURL: '',
             role: role || 'default',
           });
+
+          user.updateProfile({
+            displayName: username,
+            photoURL: '',
+          });
+
           this.afAuth.authState.subscribe((user) => {
             if (user) {
               this.router.navigate(['/dashboard']);
             }
           });
         } else {
-          window.alert('Error: El usuario es nulo.');
+          this.alert.showErrorAlert('Error sign up', 'Null user');
         }
       })
       .catch((error) => {
-        window.alert(error.message);
+        this.alert.showErrorAlert('Error sign up', error.message);
       });
+  }
+
+  deleteUser() {
+    return this.afAuth.currentUser.then((user) => {
+      if (user) {
+        return user.delete();
+      }
+      throw new Error('No se ha encontrado un usuario autenticado.');
+    });
   }
 }

@@ -90,6 +90,7 @@
               accept=".jpg, .png"
               id="userPhoto"
               (change)="handlePhotoChange($event)"
+              disabled
             />
             <label
               for="userPhoto"
@@ -120,10 +121,19 @@
             type="button"
             value="Sign Up"
             class="h-10 w-32 cursor-pointer rounded-md bg-slate-800 text-sm font-semibold shadow-md transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-slate-500 hover:text-slate-800"
-            (click)="authService.signUp(userEmail.value, userPwd.value, userName.value, userRole.value)"
+            (click)="
+              authService.signUp(
+                userEmail.value,
+                userPwd.value,
+                userName.value,
+                userRole.value
+              )
+            "
           />
         </div>
-        <div class="formGroup px-5 pb-6 pt-3 text-center italic md:px-32 text-xs opacity-70">
+        <div
+          class="formGroup px-5 pb-6 pt-3 text-center text-xs italic opacity-70 md:px-32"
+        >
           <span>
             Already have an account?
             <span

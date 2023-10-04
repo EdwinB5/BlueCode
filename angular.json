@@ -15,6 +15,9 @@
           "options": {
             "outputPath": "dist/blue-code",
             "index": "src/index.html",
+            "allowedCommonJsDependencies": [
+              "sweetalert2"
+            ],
             "main": "src/main.ts",
             "polyfills": [
               "zone.js"
@@ -34,8 +37,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "4mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",

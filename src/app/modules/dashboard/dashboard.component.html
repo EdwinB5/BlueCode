@@ -7,45 +7,52 @@
     animate__fadeIn: !loaderService.isLoading
   }"
 >
-  <!-- Sidebar navigation -->
-  <div class="container-fluid">
-    <div class="row">
-      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-        <div class="inner-adjust">
-          <div class="mb-3 border-b pb-2 pt-3">
-            <h1 class="h2">User Profile</h1>
-          </div>
-          <!-- Show user data when logged in -->
-          <div class="row" *ngIf="authService.userData as user">
-            <div class="w-full">
-              <div class="flex">
-                <img
-                  class="img-thumbnail mr-5 self-start rounded-full"
-                  src="{{ user.photoURL ? user.photoURL : '' }}"
-                  alt="{{ user.displayName }}"
-                />
-                <div class="media-body">
-                  <h1 class="text-xl font-bold">
-                    Hello:
-                    <span class="font-semibold">{{
-                      user.displayName ? user.displayName : "User"
-                    }}</span>
-                  </h1>
-                  <p>
-                    User ID: <span class="font-semibold">{{ user.uid }}</span>
-                  </p>
-                  <p>
-                    Email: <span class="font-semibold">{{ user.email }}</span>
-                  </p>
-                  <p>
-                    Role: <span class="font-semibold">{{ user.role }}</span>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
+  <section class="h-screen rounded-md bg-slate-700 p-5 shadow-md">
+    <div class="mb-3 border-b pb-5 pt-3 text-xl font-semibold">
+      <h1>User Profile</h1>
     </div>
-  </div>
+    <div class="w-full flex-1 md:flex mt-5" *ngIf="authService.userData as user">
+      <div
+        class="flex items-center justify-center rounded-full sm:my-5 md:mx-5"
+      >
+        <img
+          class="w-60 rounded-full border-none object-cover p-2 opacity-70 shadow-lg"
+          src="{{
+            user.photoURL
+              ? user.photoURL
+              : 'assets/images/backgrounds/profile.webp'
+          }}"
+          alt="{{ user.displayName }}"
+        />
+      </div>
+      <div class="w-full rounded-md p-5 shadow-md">
+        <h1 class="text-xl font-bold">
+          Hello:
+          <span class="font-semibold">{{
+            user.displayName ? user.displayName : "User"
+          }}</span>
+        </h1>
+        <p>
+          User ID: <span class="font-semibold">{{ user.uid }}</span>
+        </p>
+        <p>
+          Email: <span class="font-semibold">{{ user.email }}</span>
+        </p>
+        <p>
+          Role: <span class="font-semibold">{{ user.role }}</span>
+        </p>
+      </div>
+    </div>
+    <div
+      class="mt-5 flex w-full items-center justify-center space-x-5 rounded-md shadow-md before:h-16"
+    >
+      <p>Button 1</p>
+      <p>Button 2</p>
+      <p>Button 3</p>
+      <p>Button 4</p>
+      <p>Button 5</p>
+    </div>
+  </section>
+  <!-- Dashboard content -->
+  <section></section>
 </div>

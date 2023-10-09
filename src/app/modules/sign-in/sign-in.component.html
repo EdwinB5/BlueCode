@@ -8,7 +8,7 @@
 >
   <div
     class="authBlock rounded-md bg-slate-700 shadow-md"
-    (keydown.enter)="authService.signIn(userEmail.value, userPassword.value)"
+    (keydown.enter)="onSignIn(userEmail.value, userPassword.value)"
   >
     <div class="h-16 w-full">
       <img
@@ -58,7 +58,8 @@
         type="button"
         value="Log in"
         class="h-10 w-32 cursor-pointer rounded-md bg-slate-800 text-sm font-semibold shadow-md transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-slate-500 hover:text-slate-800"
-        (click)="authService.signIn(userEmail.value, userPassword.value)"
+        (click)="onSignIn(userEmail.value, userPassword.value)"
+        [disabled]="isLogginIn"
       />
     </div>
     <div

@@ -6,7 +6,17 @@
     animate__fadeIn: !loaderService.isLoading
   }"
 >
-  <div class="displayTable">
+  <div
+    class="displayTable"
+    (keydown.enter)="
+      authService.signUp(
+        userEmail.value,
+        userPwd.value,
+        userName.value,
+        userRole.value
+      )
+    "
+  >
     <div class="displayTableCell">
       <div class="authBlock rounded-md bg-slate-700 shadow-md">
         <div class="h-16 w-full">

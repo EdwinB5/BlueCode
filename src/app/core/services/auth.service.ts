@@ -7,18 +7,20 @@ import {
 import { Router } from '@angular/router';
 import { User } from '@models/user.model';
 import { AlertService } from './alert.service';
+import { LoaderComponentService } from './loader-component.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  userData: any;
+  userData: User | null;
 
   constructor(
     public afs: AngularFirestore,
     public afAuth: AngularFireAuth,
     public router: Router,
     public alert: AlertService,
+    public loaderService: LoaderComponentService,
   ) {
     this.afAuth.authState.subscribe((user) => {
       if (user) {
@@ -28,6 +30,7 @@ export class AuthService {
             this.userData = doc.data() as User;
           }
           localStorage.setItem('user', JSON.stringify(this.userData));
+          this.router.navigate(['/dashboard']);
         });
       } else {
         this.userData = null;
@@ -36,7 +39,111 @@ export class AuthService {
     });
   }
 
-  setUserData(user: any) {
+  private getUserData(): User | null {
+    const user = JSON.parse(localStorage.getItem('user')!);
+    return user;
+  }
+
+  async signIn(email: string, password: string) {
+    try {
+      const result = await this.afAuth.signInWithEmailAndPassword(
+        email,
+        password,
+      );
+      if (result.user) {
+        this.router.navigate(['/dashboard']);
+      }
+    } catch (error: any) {
+      this.alert.showErrorAlert('Error sign in', error.message);
+    }
+  }
+
+  async signOut() {
+    try {
+      await this.afAuth.signOut();
+      localStorage.removeItem('user');
+      this.router.navigate(['/sign-in']);
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  }
+
+  get isLoggedIn(): boolean {
+    return this.getUserData() !== null;
+  }
+
+  get userRole(): string {
+    const user = this.getUserData();
+    return user ? user.role || '' : '';
+  }
+
+  async signUp(
+    email: string,
+    password: string,
+    username: string,
+    role: string,
+  ) {
+    try {
+      const result = await this.afAuth.createUserWithEmailAndPassword(
+        email,
+        password,
+      );
+      const user = result.user;
+      if (user) {
+        await this.setUserData({
+          uid: user.uid,
+          email: email,
+          displayName: username,
+          photoURL: '',
+          role: role || 'default',
+        });
+
+        await user.updateProfile({
+          displayName: username,
+          photoURL: '',
+        });
+
+        this.router.navigate(['/dashboard']);
+      } else {
+        this.alert.showErrorAlert('Error sign up', 'Null user');
+      }
+    } catch (error: any) {
+      this.alert.showErrorAlert('Error sign up', error.message);
+    }
+  }
+
+  async deleteUser() {
+    try {
+      const result = await this.alert.showWarningAlert(
+        'Confirmation',
+        'Are you sure you want to delete your account? This action cannot be undone.',
+      );
+
+      if (result.isConfirmed) {
+        const user = await this.afAuth.currentUser;
+
+        if (user) {
+          const userId = user.uid;
+          await this.afs.collection('users').doc(userId).delete();
+          user.delete().then(() => {
+            this.loaderService.runLoader(500, ()=> {
+              this.router.navigate(['/sign-in']);
+            })
+          });
+        } else {
+          this.alert.showErrorAlert(
+            'Error deleting',
+            'No authenticated user found.',
+          );
+          console.log('No authenticated user found.');
+        }
+      }
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
+  }
+
+  private async setUserData(user: any) {
     const userRef: AngularFirestoreDocument<User> = this.afs.doc(
       `users/${user.uid}`,
     );
@@ -48,82 +155,10 @@ export class AuthService {
       role: user.role,
     };
 
-    return userRef.set(userData, {
-      merge: true,
-    });
-  }
-
-  signIn(email: string, password: string) {
-    return this.afAuth
-      .signInWithEmailAndPassword(email, password)
-      .then((result: { user: any }) => {
-        this.afAuth.authState.subscribe((user) => {
-          if (user) {
-            this.router.navigate(['/dashboard']);
-          }
-        });
-      })
-      .catch((error: { message: any }) => {
-        this.alert.showErrorAlert('Error sign in', error.message);
-      });
-  }
-
-  signOut() {
-    return this.afAuth.signOut().then(() => {
-      localStorage.removeItem('user');
-      this.router.navigate(['/sign-in']);
-    });
-  }
-
-  get isLoggedIn(): boolean {
-    const user = JSON.parse(localStorage.getItem('user')!);
-    return user != null;
-  }
-
-  get userRole(): string {
-    const user = JSON.parse(localStorage.getItem('user')!);
-    return user.role || '';
-  }
-
-  signUp(email: string, password: string, username: string, role: string) {
-    return this.afAuth
-      .createUserWithEmailAndPassword(email, password)
-      .then((result) => {
-        const user = result.user;
-        if (user) {
-          this.setUserData({
-            uid: user.uid,
-            email: email,
-            displayName: username,
-            photoURL: '',
-            role: role || 'default',
-          });
-
-          user.updateProfile({
-            displayName: username,
-            photoURL: '',
-          });
-
-          this.afAuth.authState.subscribe((user) => {
-            if (user) {
-              this.router.navigate(['/dashboard']);
-            }
-          });
-        } else {
-          this.alert.showErrorAlert('Error sign up', 'Null user');
-        }
-      })
-      .catch((error) => {
-        this.alert.showErrorAlert('Error sign up', error.message);
-      });
-  }
-
-  deleteUser() {
-    return this.afAuth.currentUser.then((user) => {
-      if (user) {
-        return user.delete();
-      }
-      throw new Error('No se ha encontrado un usuario autenticado.');
-    });
+    try {
+      await userRef.set(userData, { merge: true });
+    } catch (error) {
+      console.error('Error setting user data:', error);
+    }
   }
 }

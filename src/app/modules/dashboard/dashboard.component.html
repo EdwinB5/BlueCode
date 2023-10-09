@@ -7,11 +7,14 @@
     animate__fadeIn: !loaderService.isLoading
   }"
 >
-  <section class="h-screen rounded-md bg-slate-700 p-5 shadow-md">
+  <section class="h-auto rounded-md bg-slate-700 p-5 shadow-md">
     <div class="mb-3 border-b pb-5 pt-3 text-xl font-semibold">
       <h1>User Profile</h1>
     </div>
-    <div class="w-full flex-1 md:flex mt-5" *ngIf="authService.userData as user">
+    <div
+      class="mt-5 w-full flex-1 md:flex"
+      *ngIf="authService.userData as user"
+    >
       <div
         class="flex items-center justify-center rounded-full sm:my-5 md:mx-5"
       >
@@ -51,6 +54,10 @@
       <p>Button 3</p>
       <p>Button 4</p>
       <p>Button 5</p>
+    </div>
+    <div class="flex items-center justify-end py-5">
+      <button class="rounded-md bg-slate-800 p-3 shadow-md"
+      type="button" (click)="authService.deleteUser()">Delete User</button>
     </div>
   </section>
   <!-- Dashboard content -->

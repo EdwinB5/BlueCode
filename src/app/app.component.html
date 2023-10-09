@@ -50,25 +50,25 @@
       <a
         *ngIf="!authService.isLoggedIn"
         [routerLink]="'sign-in'"
-        class="block px-4 py-2 opacity-50 hover:bg-slate-400 hover:text-slate-800"
+        class="block cursor-pointer px-4 py-2 opacity-50 hover:bg-slate-400 hover:text-slate-800"
         >Sign In</a
       >
       <a
         *ngIf="!authService.isLoggedIn"
         [routerLink]="'sign-up'"
-        class="block px-4 py-2 opacity-50 hover:bg-slate-400 hover:text-slate-800"
+        class="block cursor-pointer px-4 py-2 opacity-50 hover:bg-slate-400 hover:text-slate-800"
         >Sign Up</a
       >
       <a
         *ngIf="authService.isLoggedIn"
         [routerLink]="'dashboard'"
-        class="block px-4 py-2 opacity-50 hover:bg-slate-400 hover:text-slate-800"
+        class="block cursor-pointer px-4 py-2 opacity-50 hover:bg-slate-400 hover:text-slate-800"
         >Dashboard</a
       >
       <a
         *ngIf="authService.isLoggedIn"
         (click)="authService.signOut()"
-        class="block px-4 py-2 opacity-50 hover:bg-slate-400 hover:text-slate-800"
+        class="block cursor-pointer px-4 py-2 opacity-50 hover:bg-slate-400 hover:text-slate-800"
         >Sign Out</a
       >
     </div>

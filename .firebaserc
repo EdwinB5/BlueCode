@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "bluecode-caae6": {
+      "hosting": {
+        "BlueCode": [
+          "bluecode-caae6"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "bluecode-caae6"
+  }
+}

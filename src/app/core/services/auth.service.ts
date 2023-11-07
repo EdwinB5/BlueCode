@@ -82,6 +82,7 @@ export class AuthService {
     password: string,
     username: string,
     role: string,
+    photoURL: string
   ) {
     try {
       const result = await this.afAuth.createUserWithEmailAndPassword(
@@ -94,7 +95,7 @@ export class AuthService {
           uid: user.uid,
           email: email,
           displayName: username,
-          photoURL: '',
+          photoURL: photoURL || '',
           role: role || 'default',
         });
 

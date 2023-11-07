@@ -1,1 +1,9 @@
-{}
+{
+  "hosting": [
+    {
+      "target": "BlueCode",
+      "source": ".",
+      "frameworksBackend": {}
+    }
+  ]
+}

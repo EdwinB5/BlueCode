@@ -1,6 +1,5 @@
 <div
-  class="h-full w-full px-5"
-  id="contact-us"
+  class="h-full w-full px-5 py-5"
   *ngIf="!loaderService.isLoading"
   [ngClass]="{
     animate__animated: !loaderService.isLoading,
@@ -15,20 +14,30 @@
       class="mt-5 w-full flex-1 md:flex"
       *ngIf="authService.userData as user"
     >
-      <div
-        class="flex items-center justify-center rounded-full sm:my-5 md:mx-5"
-      >
-        <img
-          class="w-60 rounded-full border-none object-cover p-2 opacity-70 shadow-lg"
-          src="{{
-            user.photoURL
-              ? user.photoURL
-              : 'assets/images/backgrounds/profile.webp'
-          }}"
-          alt="{{ user.displayName }}"
-        />
+      <div>
+        <div
+          class="flex items-center justify-center sm:my-5 md:mx-5"
+        >
+          <img
+            class="w-60 rounded-full border-none object-cover p-2 shadow-lg bg-slate-800 bg-opacity-80"
+            src="{{
+              user.photoURL
+                ? user.photoURL
+                : 'assets/images/backgrounds/profile.webp'
+            }}"
+            alt="{{ user.displayName }}"
+          />
+        </div>
+        <div class="flex items-center justify-center pt-3 opacity-90 sm:px-4">
+          <button
+            class="rounded-md bg-slate-800 text-sm p-2 shadow-md italic w-44 opacity-90 transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-slate-500"
+            type="button"
+          >
+            Update User
+          </button>
+        </div>
       </div>
-      <div class="w-full rounded-md p-5 shadow-md">
+      <div class="w-full rounded-md px-5 py-5 shadow-md">
         <h1 class="text-xl font-bold">
           Hello:
           <span class="font-semibold">{{
@@ -55,9 +64,14 @@
       <p>Button 4</p>
       <p>Button 5</p>
     </div>
-    <div class="flex items-center justify-end py-5">
-      <button class="rounded-md bg-slate-800 p-3 shadow-md"
-      type="button" (click)="authService.deleteUser()">Delete User</button>
+    <div class="flex items-center justify-end py-5 text-sm">
+      <button
+        class="rounded-md bg-slate-800 p-2 shadow-md italic w-44 opacity-90 transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-slate-500"
+        type="button"
+        (click)="authService.deleteUser()"
+      >
+        Delete User
+      </button>
     </div>
   </section>
   <!-- Dashboard content -->

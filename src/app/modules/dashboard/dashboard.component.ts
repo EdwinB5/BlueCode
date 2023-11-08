@@ -14,7 +14,7 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loaderService.runLoader(100, () => {
+    this.loaderService.runLoader(2500, () => {
       console.log('Dashboard loading...');
     });
   }

@@ -28,6 +28,7 @@ import { NavbarHorizontalComponent } from './core/components/navbar-horizontal/n
 import { SignInComponent } from './modules/sign-in/sign-in.component';
 import { SignUpComponent } from './modules/sign-up/sign-up.component';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
+import { ModifyComponent } from './modules/modify/modify.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { DashboardComponent } from './modules/dashboard/dashboard.component';
     SignInComponent,
     SignUpComponent,
     DashboardComponent,
+    ModifyComponent,
   ],
   imports: [
     BrowserModule,

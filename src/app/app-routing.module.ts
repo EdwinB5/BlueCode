@@ -13,6 +13,7 @@ import { SignUpComponent } from './modules/sign-up/sign-up.component';
 
 import { AuthGuard } from './shared/guard/auth.guard';
 import { NoAuthGuard } from './shared/guard/no-auth.guard';
+import { ModifyComponent } from './modules/modify/modify.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: 'sign-in', component: SignInComponent, canActivate: [NoAuthGuard] },
   { path: 'sign-up', component: SignUpComponent, canActivate: [NoAuthGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard/user/modify', component: ModifyComponent, canActivate: [AuthGuard]},
   { path: '**', component: CustomErrorComponent },
 ];
 
